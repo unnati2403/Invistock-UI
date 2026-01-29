@@ -18,16 +18,6 @@ import Bundles from "@/pages/Items/Bundles";
 import InventoryAdjustments from "@/pages/Inventory/InventoryAdjustments";
 import TransferOrders from "@/pages/Inventory/TransferOrders";
 import ItemAvailability from "@/pages/Inventory/ItemAvailability";
-
-import Customers from "@/pages/Sales/Customers";
-import SalesOrders from "@/pages/Sales/SalesOrders";
-import PackagesPage from "@/pages/Sales/PackagesPage";
-import Shipments from "@/pages/Sales/Shipments";
-import CreditNotes from "@/pages/Sales/SalesCreditNotes";
-import Invoices from "@/pages/Sales/Invoices";
-
-import Supplier from "@/pages/Purchases/Supplier";
-import PurchaseOrders from "@/pages/Purchases/PurchaseOrders";
 import PurchaseBills from "@/pages/Purchases/PurchaseBills";
 import PurchaseCredit from "@/pages/Purchases/PurchaseCredit";
 
@@ -80,7 +70,7 @@ function ProtectedLayout() {
         <AppSidebar />
         <div className="flex flex-col flex-1 min-w-0">
           <Header />
-          <main className="flex-1 p-6 overflow-auto bg-slate-50">
+          <main className="flex-1 p-4 md:p-6 overflow-auto bg-slate-50">
             <Routes>
 
 
@@ -157,3 +147,14 @@ function ProtectedLayout() {
 }
 
 export default App;
+
+
+import Customers from "@/pages/Sales/Customers";
+import SalesOrders from "@/pages/Sales/SalesOrders";
+import PackagesPage from "@/pages/Sales/PackagesPage";
+import Shipments from "@/pages/Sales/Shipments";
+import CreditNotes from "@/pages/Sales/SalesCreditNotes";
+import Invoices from "@/pages/Sales/Invoices";
+
+import Supplier from "@/pages/Purchases/Supplier";
+import PurchaseOrders from "@/pages/Purchases/PurchaseOrders";

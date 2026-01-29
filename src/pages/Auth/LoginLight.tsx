@@ -64,32 +64,32 @@ export default function LoginLight() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 via-white to-blue-50 px-4 py-8 relative overflow-hidden">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#0000000a_1px,transparent_1px),linear-gradient(to_bottom,#0000000a_1px,transparent_1px)] bg-[size:40px_40px]"></div>
 
-      <div className="absolute top-20 right-20 w-96 h-96 bg-blue-200/40 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-20 left-20 w-96 h-96 bg-purple-200/40 rounded-full blur-3xl"></div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-100/30 rounded-full blur-3xl"></div>
+      <div className="absolute top-20 right-20 w-64 h-64 md:w-96 md:h-96 bg-blue-200/40 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-20 left-20 w-64 h-64 md:w-96 md:h-96 bg-purple-200/40 rounded-full blur-3xl"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 md:w-96 md:h-96 bg-indigo-100/30 rounded-full blur-3xl"></div>
 
       <div className="max-w-7xl w-full relative grid lg:grid-cols-2 gap-8 items-center">
-        <div className="bg-white rounded-3xl shadow-2xl shadow-slate-200/50 border border-slate-200 overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-[length:200%_100%] px-10 py-8">
-            <div className="flex items-center gap-4 mb-3">
-              <div className="w-14 h-14 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center border border-white/30 shadow-xl">
-                <Package className="w-8 h-8 text-white" />
+        <div className="bg-white rounded-2xl md:rounded-3xl shadow-2xl shadow-slate-200/50 border border-slate-200 overflow-hidden">
+          <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-[length:200%_100%] px-6 py-5 md:px-10 md:py-8">
+            <div className="flex items-center gap-3 md:gap-4 mb-2 md:mb-3">
+              <div className="w-10 h-10 md:w-14 md:h-14 bg-white/20 backdrop-blur-xl rounded-xl md:rounded-2xl flex items-center justify-center border border-white/30 shadow-xl">
+                <Package className="w-6 h-6 md:w-8 md:h-8 text-white" />
               </div>
-              <h1 className="text-4xl font-bold text-white tracking-tight">Invistock</h1>
+              <h1 className="text-2xl md:text-4xl font-bold text-white tracking-tight">Invistock</h1>
             </div>
-            <p className="text-blue-100 text-lg">Welcome back to your command center</p>
+            <p className="text-blue-100 text-sm md:text-lg">Welcome back to your command center</p>
           </div>
 
-          <div className="p-10">
+          <div className="p-6 md:p-10">
             {successMessage && (
-              <div className="mb-6 p-5 bg-green-50 border border-green-200 rounded-2xl flex items-start gap-4">
+              <div className="mb-4 md:mb-6 p-4 md:p-5 bg-green-50 border border-green-200 rounded-2xl flex items-start gap-4">
                 <CheckCircle2 className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
                 <p className="text-sm text-green-800">{successMessage}</p>
               </div>
             )}
 
             {error && (
-              <div className="mb-6 p-5 bg-red-50 border border-red-200 rounded-2xl flex items-start gap-4">
+              <div className="mb-4 md:mb-6 p-4 md:p-5 bg-red-50 border border-red-200 rounded-2xl flex items-start gap-4">
                 <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
                 <p className="text-sm text-red-800">{error}</p>
               </div>
@@ -108,7 +108,7 @@ export default function LoginLight() {
                     id="email"
                     type="email"
                     {...register('email')}
-                    className={`pl-12 pr-4 h-14 bg-slate-50 border-slate-300 text-slate-800 placeholder:text-slate-400 rounded-xl text-base focus:bg-white focus:border-blue-500 focus:ring-blue-500/20 ${
+                    className={`pl-12 pr-4 h-11 md:h-14 bg-slate-50 border-slate-300 text-slate-800 placeholder:text-slate-400 rounded-xl text-sm md:text-base focus:bg-white focus:border-blue-500 focus:ring-blue-500/20 ${
                       errors.email ? 'border-red-400 focus:ring-red-500/20 focus:border-red-500' : ''
                     }`}
                     placeholder="you@company.com"
@@ -140,7 +140,7 @@ export default function LoginLight() {
                     id="password"
                     type={showPassword ? 'text' : 'password'}
                     {...register('password')}
-                    className={`pl-12 pr-12 h-14 bg-slate-50 border-slate-300 text-slate-800 placeholder:text-slate-400 rounded-xl text-base focus:bg-white focus:border-blue-500 focus:ring-blue-500/20 ${
+                    className={`pl-12 pr-12 h-11 md:h-14 bg-slate-50 border-slate-300 text-slate-800 placeholder:text-slate-400 rounded-xl text-sm md:text-base focus:bg-white focus:border-blue-500 focus:ring-blue-500/20 ${
                       errors.password ? 'border-red-400 focus:ring-red-500/20 focus:border-red-500' : ''
                     }`}
                     placeholder="Enter your password"
@@ -174,7 +174,7 @@ export default function LoginLight() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-[length:200%_100%] hover:bg-[position:100%_0] text-white font-semibold h-14 rounded-xl shadow-lg shadow-blue-500/30 transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed text-base"
+                className="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-[length:200%_100%] hover:bg-[position:100%_0] text-white font-semibold h-11 md:h-14 rounded-xl shadow-lg shadow-blue-500/30 transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
               >
                 {isSubmitting ? (
                   <span className="flex items-center justify-center gap-3">
@@ -190,7 +190,7 @@ export default function LoginLight() {
               </Button>
             </form>
 
-            <div className="relative my-8">
+            <div className="relative my-6 md:my-8">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-slate-200"></div>
               </div>
@@ -210,7 +210,7 @@ export default function LoginLight() {
               </a>
             </div>
 
-            <div className="mt-8 pt-8 border-t border-slate-200">
+            <div className="mt-6 pt-6 md:mt-8 md:pt-8 border-t border-slate-200">
               <p className="text-xs text-center text-slate-500">
                 Protected by enterprise-grade security. Your data is encrypted and secure.
               </p>
@@ -219,32 +219,32 @@ export default function LoginLight() {
         </div>
 
         <div className="hidden lg:block space-y-6">
-          <div className="bg-white rounded-3xl border border-slate-200 p-8 shadow-xl shadow-slate-200/50 transform hover:scale-105 transition-transform duration-300">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/30">
-              <Shield className="w-9 h-9 text-white" />
+          <div className="bg-white rounded-3xl border border-slate-200 p-6 xl:p-8 shadow-xl shadow-slate-200/50 transform hover:scale-105 transition-transform duration-300">
+            <div className="w-12 h-12 xl:w-16 xl:h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-4 xl:mb-6 shadow-lg shadow-blue-500/30">
+              <Shield className="w-7 h-7 xl:w-9 xl:h-9 text-white" />
             </div>
-            <h3 className="text-2xl font-bold text-slate-800 mb-3">Enterprise Security</h3>
-            <p className="text-slate-600 text-base leading-relaxed">
+            <h3 className="text-lg xl:text-2xl font-bold text-slate-800 mb-2 xl:mb-3">Enterprise Security</h3>
+            <p className="text-slate-600 text-sm xl:text-base leading-relaxed">
               Bank-level encryption, SOC 2 compliance, and multi-factor authentication keep your inventory data secure.
             </p>
           </div>
 
-          <div className="bg-white rounded-3xl border border-slate-200 p-8 shadow-xl shadow-slate-200/50 transform hover:scale-105 transition-transform duration-300">
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-purple-500/30">
-              <Zap className="w-9 h-9 text-white" />
+          <div className="bg-white rounded-3xl border border-slate-200 p-6 xl:p-8 shadow-xl shadow-slate-200/50 transform hover:scale-105 transition-transform duration-300">
+            <div className="w-12 h-12 xl:w-16 xl:h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4 xl:mb-6 shadow-lg shadow-purple-500/30">
+              <Zap className="w-7 h-7 xl:w-9 xl:h-9 text-white" />
             </div>
-            <h3 className="text-2xl font-bold text-slate-800 mb-3">Real-Time Insights</h3>
-            <p className="text-slate-600 text-base leading-relaxed">
+            <h3 className="text-lg xl:text-2xl font-bold text-slate-800 mb-2 xl:mb-3">Real-Time Insights</h3>
+            <p className="text-slate-600 text-sm xl:text-base leading-relaxed">
               Live inventory tracking, instant alerts, and powerful analytics to make data-driven decisions faster.
             </p>
           </div>
 
-          <div className="bg-white rounded-3xl border border-slate-200 p-8 shadow-xl shadow-slate-200/50 transform hover:scale-105 transition-transform duration-300">
-            <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-indigo-500/30">
-              <Users className="w-9 h-9 text-white" />
+          <div className="bg-white rounded-3xl border border-slate-200 p-6 xl:p-8 shadow-xl shadow-slate-200/50 transform hover:scale-105 transition-transform duration-300">
+            <div className="w-12 h-12 xl:w-16 xl:h-16 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-4 xl:mb-6 shadow-lg shadow-indigo-500/30">
+              <Users className="w-7 h-7 xl:w-9 xl:h-9 text-white" />
             </div>
-            <h3 className="text-2xl font-bold text-slate-800 mb-3">Team Collaboration</h3>
-            <p className="text-slate-600 text-base leading-relaxed">
+            <h3 className="text-lg xl:text-2xl font-bold text-slate-800 mb-2 xl:mb-3">Team Collaboration</h3>
+            <p className="text-slate-600 text-sm xl:text-base leading-relaxed">
               Seamless multi-user access with role-based permissions and activity tracking across all locations.
             </p>
           </div>

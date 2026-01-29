@@ -13,7 +13,7 @@ export function Header() {
   };
 
   return (
-    <header className="w-full flex items-center border-b border-slate-200 px-6 h-16 bg-white shrink-0">
+    <header className="w-full flex items-center border-b border-slate-200 px-4 md:px-6 h-14 md:h-16 bg-white shrink-0">
       <div className="flex-1" />
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="icon" className="relative hover:bg-blue-50 text-slate-500 hover:text-blue-600">
