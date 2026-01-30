@@ -9,43 +9,26 @@ import {
   Warehouse,
   Ruler,
   ClipboardCheck,
+  PackageOpen,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Stepper, type StepDefinition } from "@/components/ui/stepper";
-import BasicInfoStep from "./steps/BasicInfoStep";
-import PricingStep from "./steps/PricingStep";
-import WarehousesStep from "./steps/WarehousesStep";
-import DimensionsStep from "./steps/DimensionsStep";
-import ReviewStep from "./steps/ReviewStep";
+import type { PriceRule } from "./CreateItemWizard";
+import BasicInfoStep from "./bundle-steps/BasicInfoStep";
+import BundleItemsStep from "./bundle-steps/BundleItemsStep";
+import PricingStep from "./bundle-steps/PricingStep";
+import WarehousesStep from "./bundle-steps/WarehousesStep";
+import DimensionsStep from "./bundle-steps/DimensionsStep";
+import ReviewStep from "./bundle-steps/ReviewStep";
 
-// Price Rule types
-interface VolumeRule {
-  type: "volume";
-  minQuantity: string;
-  maxQuantity: string;
-  discount: string;
-  priority: string;
+export interface BundleItem {
+  name: string;
+  sku: string;
+  quantity: string;
+  unitPrice: string;
 }
 
-interface CustomerGroupRule {
-  type: "customerGroup";
-  customerGroup: string;
-  discount: string;
-  priority: string;
-}
-
-interface PromotionRule {
-  type: "promotion";
-  promotionName: string;
-  startDate: string;
-  endDate: string;
-  discount: string;
-  priority: string;
-}
-
-export type PriceRule = VolumeRule | CustomerGroupRule | PromotionRule;
-
-export interface ItemFormData {
+export interface BundleFormData {
   // Basic Info
   sku: string;
   unit: string;
@@ -55,6 +38,8 @@ export interface ItemFormData {
   category: string;
   brand: string;
   productImage: File | null;
+  // Bundle Items
+  bundleItems: BundleItem[];
   // Pricing
   basePrice: string;
   costPrice: string;
@@ -70,21 +55,22 @@ export interface ItemFormData {
   height: string;
 }
 
-export interface StepProps {
-  formData: ItemFormData;
-  setFormData: React.Dispatch<React.SetStateAction<ItemFormData>>;
+export interface BundleStepProps {
+  formData: BundleFormData;
+  setFormData: React.Dispatch<React.SetStateAction<BundleFormData>>;
   pricingMode: string;
 }
 
 const STEPS: StepDefinition[] = [
   { id: 0, label: "Basic Info", icon: FileText },
-  { id: 1, label: "Pricing", icon: DollarSign },
-  { id: 2, label: "Warehouses", icon: Warehouse },
-  { id: 3, label: "Dimensions", icon: Ruler },
-  { id: 4, label: "Review", icon: ClipboardCheck },
+  { id: 1, label: "Bundle Items", icon: PackageOpen },
+  { id: 2, label: "Pricing", icon: DollarSign },
+  { id: 3, label: "Warehouses", icon: Warehouse },
+  { id: 4, label: "Dimensions", icon: Ruler },
+  { id: 5, label: "Review", icon: ClipboardCheck },
 ];
 
-const INITIAL_FORM_DATA: ItemFormData = {
+const INITIAL_FORM_DATA: BundleFormData = {
   sku: "",
   unit: "",
   name: "",
@@ -93,6 +79,7 @@ const INITIAL_FORM_DATA: ItemFormData = {
   category: "",
   brand: "",
   productImage: null,
+  bundleItems: [],
   basePrice: "",
   costPrice: "",
   profitMargin: "",
@@ -105,22 +92,24 @@ const INITIAL_FORM_DATA: ItemFormData = {
   height: "",
 };
 
-interface CreateItemWizardProps {
+interface CreateBundleWizardProps {
   onCancel: () => void;
 }
 
-export default function CreateItemWizard({ onCancel }: CreateItemWizardProps) {
+export default function CreateBundleWizard({
+  onCancel,
+}: CreateBundleWizardProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(
     new Set()
   );
-  const [formData, setFormData] = useState<ItemFormData>(INITIAL_FORM_DATA);
+  const [formData, setFormData] =
+    useState<BundleFormData>(INITIAL_FORM_DATA);
 
   // TODO: Replace with actual backend API call
   const pricingMode = "none";
 
   const handleNext = () => {
-    // Future: validate current step before proceeding
     setCompletedSteps((prev) => new Set(prev).add(currentStep));
     setCurrentStep((prev) => Math.min(prev + 1, STEPS.length - 1));
   };
@@ -131,8 +120,7 @@ export default function CreateItemWizard({ onCancel }: CreateItemWizardProps) {
 
   const handleSubmit = () => {
     setCompletedSteps((prev) => new Set(prev).add(currentStep));
-    console.log("Submitting item:", formData);
-    // Future: API call, then navigate or show success
+    console.log("Submitting bundle:", formData);
   };
 
   const handleStepClick = (stepIndex: number) => {
@@ -142,18 +130,24 @@ export default function CreateItemWizard({ onCancel }: CreateItemWizardProps) {
   };
 
   const renderStepContent = () => {
-    const stepProps: StepProps = { formData, setFormData, pricingMode };
+    const stepProps: BundleStepProps = {
+      formData,
+      setFormData,
+      pricingMode,
+    };
 
     switch (currentStep) {
       case 0:
         return <BasicInfoStep {...stepProps} />;
       case 1:
-        return <PricingStep {...stepProps} />;
+        return <BundleItemsStep {...stepProps} />;
       case 2:
-        return <WarehousesStep {...stepProps} />;
+        return <PricingStep {...stepProps} />;
       case 3:
-        return <DimensionsStep {...stepProps} />;
+        return <WarehousesStep {...stepProps} />;
       case 4:
+        return <DimensionsStep {...stepProps} />;
+      case 5:
         return <ReviewStep {...stepProps} />;
       default:
         return null;
@@ -168,13 +162,17 @@ export default function CreateItemWizard({ onCancel }: CreateItemWizardProps) {
       <div className="flex items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-xl md:text-2xl font-bold text-slate-800">
-            Create New Item
+            Create Bundle
           </h1>
           <p className="text-slate-500 text-sm mt-1">
-            Fill in the details to add a new item to your inventory.
+            Combine multiple items into a single sellable bundle.
           </p>
         </div>
-        <Button variant="outline" onClick={onCancel} className="h-9 md:h-10 px-3 md:px-4 shrink-0">
+        <Button
+          variant="outline"
+          onClick={onCancel}
+          className="h-9 md:h-10 px-3 md:px-4 shrink-0"
+        >
           <X className="h-4 w-4 mr-1" />
           Cancel
         </Button>
@@ -221,7 +219,7 @@ export default function CreateItemWizard({ onCancel }: CreateItemWizardProps) {
             className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg shadow-green-200/50 hover:shadow-green-300/50 transition-all duration-300 h-11 px-6"
           >
             <Check className="h-4 w-4 mr-1" />
-            Create Item
+            Create Bundle
           </Button>
         )}
       </div>

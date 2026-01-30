@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { FileText, Upload, X } from "lucide-react";
-import type { StepProps } from "../CreateItemWizard";
+import type { BundleStepProps } from "../CreateBundleWizard";
 
 const INPUT_CLASS =
   "w-full h-10 px-3 rounded-lg border border-slate-200 bg-slate-50 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition-colors";
@@ -13,7 +13,10 @@ const CATEGORY_OPTIONS = [
   "Sports & Outdoors",
 ];
 
-export default function BasicInfoStep({ formData, setFormData }: StepProps) {
+export default function BasicInfoStep({
+  formData,
+  setFormData,
+}: BundleStepProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageDrop = (e: React.DragEvent) => {
@@ -40,15 +43,15 @@ export default function BasicInfoStep({ formData, setFormData }: StepProps) {
     <div className="space-y-6">
       {/* Step header */}
       <div className="flex items-center gap-3">
-        <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
-          <FileText className="h-5 w-5 text-blue-600" />
+        <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-teal-50 to-cyan-50 flex items-center justify-center">
+          <FileText className="h-5 w-5 text-teal-600" />
         </div>
         <div>
           <h2 className="text-lg font-semibold text-slate-800">
             Basic Information
           </h2>
           <p className="text-sm text-slate-500">
-            Enter the core details of your product.
+            Enter the core details of your bundle.
           </p>
         </div>
       </div>
@@ -66,7 +69,7 @@ export default function BasicInfoStep({ formData, setFormData }: StepProps) {
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, sku: e.target.value }))
             }
-            placeholder="e.g. SKU-001"
+            placeholder="e.g. BDL-001"
             className={INPUT_CLASS}
           />
         </div>
@@ -90,10 +93,10 @@ export default function BasicInfoStep({ formData, setFormData }: StepProps) {
           </select>
         </div>
 
-        {/* Product Name */}
+        {/* Bundle Name */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-slate-700">
-            Product Name <span className="text-red-500">*</span>
+            Bundle Name <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -101,7 +104,7 @@ export default function BasicInfoStep({ formData, setFormData }: StepProps) {
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, name: e.target.value }))
             }
-            placeholder="Enter product name"
+            placeholder="Enter bundle name"
             className={INPUT_CLASS}
           />
         </div>
@@ -140,9 +143,12 @@ export default function BasicInfoStep({ formData, setFormData }: StepProps) {
           <textarea
             value={formData.description}
             onChange={(e) =>
-              setFormData((prev) => ({ ...prev, description: e.target.value }))
+              setFormData((prev) => ({
+                ...prev,
+                description: e.target.value,
+              }))
             }
-            placeholder="Describe the product..."
+            placeholder="Describe the bundle..."
             rows={4}
             className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-slate-50 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition-colors resize-none"
           />
@@ -150,7 +156,9 @@ export default function BasicInfoStep({ formData, setFormData }: StepProps) {
 
         {/* Category */}
         <div className="space-y-2">
-          <label className="text-sm font-medium text-slate-700">Category</label>
+          <label className="text-sm font-medium text-slate-700">
+            Category
+          </label>
           <select
             value={formData.category}
             onChange={(e) =>
@@ -188,8 +196,8 @@ export default function BasicInfoStep({ formData, setFormData }: StepProps) {
           </label>
           {formData.productImage ? (
             <div className="flex items-center gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
-              <div className="h-12 w-12 rounded-lg bg-blue-50 flex items-center justify-center">
-                <Upload className="h-5 w-5 text-blue-500" />
+              <div className="h-12 w-12 rounded-lg bg-teal-50 flex items-center justify-center">
+                <Upload className="h-5 w-5 text-teal-500" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-slate-700 truncate">
@@ -209,7 +217,7 @@ export default function BasicInfoStep({ formData, setFormData }: StepProps) {
             </div>
           ) : (
             <div
-              className="border-2 border-dashed border-slate-200 rounded-lg p-8 text-center hover:border-blue-300 hover:bg-blue-50/30 transition-colors cursor-pointer"
+              className="border-2 border-dashed border-slate-200 rounded-lg p-8 text-center hover:border-teal-300 hover:bg-teal-50/30 transition-colors cursor-pointer"
               onDragOver={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -220,9 +228,11 @@ export default function BasicInfoStep({ formData, setFormData }: StepProps) {
               <Upload className="h-8 w-8 text-slate-300 mx-auto mb-2" />
               <p className="text-sm text-slate-500">
                 Drag & drop an image here, or{" "}
-                <span className="text-blue-600 font-medium">browse</span>
+                <span className="text-teal-600 font-medium">browse</span>
               </p>
-              <p className="text-xs text-slate-400 mt-1">PNG, JPG up to 5MB</p>
+              <p className="text-xs text-slate-400 mt-1">
+                PNG, JPG up to 5MB
+              </p>
             </div>
           )}
           <input

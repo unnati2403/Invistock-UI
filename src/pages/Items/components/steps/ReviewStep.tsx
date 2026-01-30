@@ -1,4 +1,4 @@
-import { ClipboardCheck } from "lucide-react";
+import { ClipboardCheck, Info } from "lucide-react";
 import type { StepProps } from "../CreateItemWizard";
 
 export default function ReviewStep({ formData }: StepProps) {
@@ -6,18 +6,23 @@ export default function ReviewStep({ formData }: StepProps) {
     {
       title: "Basic Information",
       fields: [
-        { label: "Item Name", value: formData.name },
         { label: "SKU", value: formData.sku },
-        { label: "Category", value: formData.category },
+        { label: "Unit", value: formData.unit },
+        { label: "Product Name", value: formData.name },
+        { label: "Barcode", value: formData.barcode },
         { label: "Description", value: formData.description },
+        { label: "Category", value: formData.category },
+        { label: "Brand", value: formData.brand },
+        { label: "Product Image", value: formData.productImage?.name || "" },
       ],
     },
     {
       title: "Pricing",
       fields: [
-        { label: "Cost Price", value: formData.costPrice },
-        { label: "Selling Price", value: formData.sellingPrice },
-        { label: "Tax Rate", value: formData.taxRate ? `${formData.taxRate}%` : "" },
+        { label: "Base Price", value: formData.basePrice ? `$${formData.basePrice}` : "" },
+        { label: "Cost Price", value: formData.costPrice ? `$${formData.costPrice}` : "" },
+        { label: "Profit Margin", value: formData.profitMargin ? `${formData.profitMargin}%` : "" },
+        { label: "Price Rules", value: formData.priceRules.length > 0 ? `${formData.priceRules.length} rule(s)` : "" },
       ],
     },
     {
@@ -78,6 +83,14 @@ export default function ReviewStep({ formData }: StepProps) {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* After-creation note */}
+      <div className="flex items-start gap-3 rounded-lg border border-blue-200 bg-blue-50 p-4">
+        <Info className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
+        <p className="text-sm text-blue-700">
+          After creation, use <span className="font-semibold">Inventory Adjustment</span> to add stock with proper valuation.
+        </p>
       </div>
     </div>
   );

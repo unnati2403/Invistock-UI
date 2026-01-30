@@ -42,8 +42,7 @@ class AuthService {
       const response = await api.post<SetPasswordResponse>('/api/auth/set-password', data);
       return response.data;
     } catch (error: any) {
-      // throw this.handleError(error);
-      return error;
+      throw this.handleError(error);
     }
   }
 
@@ -59,8 +58,7 @@ class AuthService {
 
       return response.data;
     } catch (error: any) {
-      // throw this.handleError(error);
-      return error;
+      throw this.handleError(error);
     }
   }
 
@@ -86,7 +84,6 @@ class AuthService {
   }
 
   private handleError(error: any): ApiError {
-    console.log('here', error)
     if (error.response) {
       const status = error.response.status;
       let message = error.response.data?.message || 'An error occurred';

@@ -8,7 +8,7 @@ import {
 import warehouseService, {
   type Warehouse,
 } from "@/services/warehouse.service";
-import type { StepProps } from "../CreateItemWizard";
+import type { ItemGroupStepProps } from "../CreateItemGroupWizard";
 
 function CountryCheckbox({
   checked,
@@ -38,7 +38,10 @@ function CountryCheckbox({
   );
 }
 
-export default function WarehousesStep({ formData, setFormData }: StepProps) {
+export default function WarehousesStep({
+  formData,
+  setFormData,
+}: ItemGroupStepProps) {
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -124,9 +127,12 @@ export default function WarehousesStep({ formData, setFormData }: StepProps) {
     []
   );
 
+  // Suppress unused lint — formData/setFormData available for future use
+  void formData;
+  void setFormData;
+
   return (
     <div className="space-y-6">
-      {/* Step header */}
       <div className="flex items-center gap-3">
         <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-violet-50 to-indigo-50 flex items-center justify-center">
           <WarehouseIcon className="h-5 w-5 text-violet-600" />
@@ -134,12 +140,11 @@ export default function WarehousesStep({ formData, setFormData }: StepProps) {
         <div>
           <h2 className="text-lg font-semibold text-slate-800">Warehouses</h2>
           <p className="text-sm text-slate-500">
-            Select the warehouses where this item will be stocked.
+            Select the warehouses where this item group will be stocked.
           </p>
         </div>
       </div>
 
-      {/* Loading state */}
       {loading && (
         <div className="flex flex-col items-center justify-center py-12">
           <Loader2 className="h-7 w-7 text-blue-500 animate-spin" />
@@ -147,7 +152,6 @@ export default function WarehousesStep({ formData, setFormData }: StepProps) {
         </div>
       )}
 
-      {/* Error state */}
       {!loading && error && (
         <div className="flex items-center gap-3 rounded-lg border border-red-200 bg-red-50 p-4">
           <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0" />
@@ -160,7 +164,6 @@ export default function WarehousesStep({ formData, setFormData }: StepProps) {
         </div>
       )}
 
-      {/* Empty state */}
       {!loading && !error && warehouses.length === 0 && (
         <div className="flex flex-col items-center justify-center py-12">
           <WarehouseIcon
@@ -171,7 +174,6 @@ export default function WarehousesStep({ formData, setFormData }: StepProps) {
         </div>
       )}
 
-      {/* Country accordion list */}
       {!loading && !error && warehouses.length > 0 && (
         <div className="space-y-3">
           {Array.from(grouped.entries()).map(
@@ -191,7 +193,6 @@ export default function WarehousesStep({ formData, setFormData }: StepProps) {
                   key={countryName}
                   className="rounded-lg border border-slate-200 bg-white overflow-hidden"
                 >
-                  {/* Country row */}
                   <div
                     className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-slate-50 transition-colors"
                     onClick={() => toggleCountryExpand(countryName)}
@@ -227,7 +228,6 @@ export default function WarehousesStep({ formData, setFormData }: StepProps) {
                     </span>
                   </div>
 
-                  {/* Warehouse children */}
                   {isExpanded && (
                     <div>
                       {countryWarehouses.map((wh) => (

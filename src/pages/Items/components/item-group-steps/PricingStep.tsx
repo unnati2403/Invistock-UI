@@ -16,7 +16,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import type { StepProps } from "../CreateItemWizard";
+import type { ItemGroupStepProps } from "../CreateItemGroupWizard";
 import type { PriceRule } from "../CreateItemWizard";
 
 const INPUT_CLASS =
@@ -62,10 +62,13 @@ function getRuleLabel(rule: PriceRule): string {
   }
 }
 
-export default function PricingStep({ formData, setFormData, pricingMode }: StepProps) {
+export default function PricingStep({
+  formData,
+  setFormData,
+  pricingMode,
+}: ItemGroupStepProps) {
   const [showModal, setShowModal] = useState(false);
 
-  // Modal state
   const [selectedType, setSelectedType] = useState<RuleType>("volume");
   const [minQuantity, setMinQuantity] = useState("");
   const [maxQuantity, setMaxQuantity] = useState("");
@@ -98,21 +101,10 @@ export default function PricingStep({ formData, setFormData, pricingMode }: Step
 
     switch (selectedType) {
       case "volume":
-        rule = {
-          type: "volume",
-          minQuantity,
-          maxQuantity,
-          discount,
-          priority,
-        };
+        rule = { type: "volume", minQuantity, maxQuantity, discount, priority };
         break;
       case "customerGroup":
-        rule = {
-          type: "customerGroup",
-          customerGroup,
-          discount,
-          priority,
-        };
+        rule = { type: "customerGroup", customerGroup, discount, priority };
         break;
       case "promotion":
         rule = {
@@ -166,7 +158,6 @@ export default function PricingStep({ formData, setFormData, pricingMode }: Step
 
   return (
     <div className="space-y-6">
-      {/* Step header */}
       <div className="flex items-center gap-3">
         <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center">
           <DollarSign className="h-5 w-5 text-amber-600" />
@@ -179,9 +170,7 @@ export default function PricingStep({ formData, setFormData, pricingMode }: Step
         </div>
       </div>
 
-      {/* Price fields */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Base Price */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-slate-700">
             Base Price <span className="text-red-500">*</span>
@@ -200,7 +189,6 @@ export default function PricingStep({ formData, setFormData, pricingMode }: Step
           </div>
         </div>
 
-        {/* Cost Price */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-slate-700">
             Cost Price <span className="text-red-500">*</span>
@@ -219,7 +207,6 @@ export default function PricingStep({ formData, setFormData, pricingMode }: Step
           </div>
         </div>
 
-        {/* Profit Margin */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-slate-700">
             Profit Margin
@@ -239,11 +226,12 @@ export default function PricingStep({ formData, setFormData, pricingMode }: Step
         </div>
       </div>
 
-      {/* Price Rules — hidden in "simple" mode */}
       {pricingMode !== "simple" && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-slate-800">Price Rules</h3>
+            <h3 className="text-sm font-semibold text-slate-800">
+              Price Rules
+            </h3>
             <Button
               type="button"
               variant="outline"
@@ -301,223 +289,225 @@ export default function PricingStep({ formData, setFormData, pricingMode }: Step
         </div>
       )}
 
-      {/* Price Rules Modal — hidden in "simple" mode */}
-      {pricingMode !== "simple" && <Dialog open={showModal} onOpenChange={(open) => !open && handleCloseModal()}>
-        <DialogContent className="sm:max-w-[480px]">
-          <DialogHeader>
-            <DialogTitle>Add Price Rule</DialogTitle>
-            <DialogDescription>
-              Select a rule type and configure its parameters.
-            </DialogDescription>
-          </DialogHeader>
+      {pricingMode !== "simple" && (
+        <Dialog
+          open={showModal}
+          onOpenChange={(open) => !open && handleCloseModal()}
+        >
+          <DialogContent className="sm:max-w-[480px]">
+            <DialogHeader>
+              <DialogTitle>Add Price Rule</DialogTitle>
+              <DialogDescription>
+                Select a rule type and configure its parameters.
+              </DialogDescription>
+            </DialogHeader>
 
-          {/* Rule type tiles */}
-          <div className="grid grid-cols-3 gap-3">
-            {RULE_TYPES.map(({ type, label, icon: Icon }) => (
-              <button
-                key={type}
-                type="button"
-                onClick={() => setSelectedType(type)}
-                className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${
-                  selectedType === type
-                    ? "border-blue-500 bg-blue-50"
-                    : "border-slate-200 bg-slate-50 hover:border-slate-300"
-                }`}
-              >
-                <Icon
-                  className={`h-6 w-6 ${
-                    selectedType === type ? "text-blue-600" : "text-slate-400"
-                  }`}
-                />
-                <span
-                  className={`text-xs font-medium ${
-                    selectedType === type ? "text-blue-700" : "text-slate-600"
+            <div className="grid grid-cols-3 gap-3">
+              {RULE_TYPES.map(({ type, label, icon: Icon }) => (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => setSelectedType(type)}
+                  className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${
+                    selectedType === type
+                      ? "border-blue-500 bg-blue-50"
+                      : "border-slate-200 bg-slate-50 hover:border-slate-300"
                   }`}
                 >
-                  {label}
-                </span>
-              </button>
-            ))}
-          </div>
-
-          {/* Conditional fields */}
-          <div className="grid grid-cols-2 gap-4 mt-2">
-            {selectedType === "volume" && (
-              <>
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-600">
-                    Min Quantity
-                  </label>
-                  <input
-                    type="number"
-                    value={minQuantity}
-                    onChange={(e) => setMinQuantity(e.target.value)}
-                    placeholder="0"
-                    className={INPUT_CLASS}
+                  <Icon
+                    className={`h-6 w-6 ${
+                      selectedType === type ? "text-blue-600" : "text-slate-400"
+                    }`}
                   />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-600">
-                    Max Quantity
-                  </label>
-                  <input
-                    type="number"
-                    value={maxQuantity}
-                    onChange={(e) => setMaxQuantity(e.target.value)}
-                    placeholder="0"
-                    className={INPUT_CLASS}
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-600">
-                    Discount (%)
-                  </label>
-                  <input
-                    type="number"
-                    value={discount}
-                    onChange={(e) => setDiscount(e.target.value)}
-                    placeholder="0"
-                    className={INPUT_CLASS}
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-600">
-                    Priority
-                  </label>
-                  <input
-                    type="number"
-                    value={priority}
-                    onChange={(e) => setPriority(e.target.value)}
-                    placeholder="1"
-                    className={INPUT_CLASS}
-                  />
-                </div>
-              </>
-            )}
-
-            {selectedType === "customerGroup" && (
-              <>
-                <div className="space-y-1.5 col-span-2">
-                  <label className="text-xs font-medium text-slate-600">
-                    Customer Group
-                  </label>
-                  <select
-                    value={customerGroup}
-                    onChange={(e) => setCustomerGroup(e.target.value)}
-                    className={INPUT_CLASS}
+                  <span
+                    className={`text-xs font-medium ${
+                      selectedType === type ? "text-blue-700" : "text-slate-600"
+                    }`}
                   >
-                    <option value="">Select group</option>
-                    {CUSTOMER_GROUPS.map((group) => (
-                      <option key={group} value={group}>
-                        {group}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-600">
-                    Discount (%)
-                  </label>
-                  <input
-                    type="number"
-                    value={discount}
-                    onChange={(e) => setDiscount(e.target.value)}
-                    placeholder="0"
-                    className={INPUT_CLASS}
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-600">
-                    Priority
-                  </label>
-                  <input
-                    type="number"
-                    value={priority}
-                    onChange={(e) => setPriority(e.target.value)}
-                    placeholder="1"
-                    className={INPUT_CLASS}
-                  />
-                </div>
-              </>
-            )}
+                    {label}
+                  </span>
+                </button>
+              ))}
+            </div>
 
-            {selectedType === "promotion" && (
-              <>
-                <div className="space-y-1.5 col-span-2">
-                  <label className="text-xs font-medium text-slate-600">
-                    Promotion Name
-                  </label>
-                  <input
-                    type="text"
-                    value={promotionName}
-                    onChange={(e) => setPromotionName(e.target.value)}
-                    placeholder="e.g. Summer Sale"
-                    className={INPUT_CLASS}
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-600">
-                    Start Date
-                  </label>
-                  <input
-                    type="date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    className={INPUT_CLASS}
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-600">
-                    End Date
-                  </label>
-                  <input
-                    type="date"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    className={INPUT_CLASS}
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-600">
-                    Discount (%)
-                  </label>
-                  <input
-                    type="number"
-                    value={discount}
-                    onChange={(e) => setDiscount(e.target.value)}
-                    placeholder="0"
-                    className={INPUT_CLASS}
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-600">
-                    Priority
-                  </label>
-                  <input
-                    type="number"
-                    value={priority}
-                    onChange={(e) => setPriority(e.target.value)}
-                    placeholder="1"
-                    className={INPUT_CLASS}
-                  />
-                </div>
-              </>
-            )}
-          </div>
+            <div className="grid grid-cols-2 gap-4 mt-2">
+              {selectedType === "volume" && (
+                <>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-slate-600">
+                      Min Quantity
+                    </label>
+                    <input
+                      type="number"
+                      value={minQuantity}
+                      onChange={(e) => setMinQuantity(e.target.value)}
+                      placeholder="0"
+                      className={INPUT_CLASS}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-slate-600">
+                      Max Quantity
+                    </label>
+                    <input
+                      type="number"
+                      value={maxQuantity}
+                      onChange={(e) => setMaxQuantity(e.target.value)}
+                      placeholder="0"
+                      className={INPUT_CLASS}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-slate-600">
+                      Discount (%)
+                    </label>
+                    <input
+                      type="number"
+                      value={discount}
+                      onChange={(e) => setDiscount(e.target.value)}
+                      placeholder="0"
+                      className={INPUT_CLASS}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-slate-600">
+                      Priority
+                    </label>
+                    <input
+                      type="number"
+                      value={priority}
+                      onChange={(e) => setPriority(e.target.value)}
+                      placeholder="1"
+                      className={INPUT_CLASS}
+                    />
+                  </div>
+                </>
+              )}
 
-          <DialogFooter>
-            <Button variant="outline" onClick={handleCloseModal}>
-              Cancel
-            </Button>
-            <Button
-              onClick={handleAddRule}
-              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white"
-            >
-              Add Rule
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>}
+              {selectedType === "customerGroup" && (
+                <>
+                  <div className="space-y-1.5 col-span-2">
+                    <label className="text-xs font-medium text-slate-600">
+                      Customer Group
+                    </label>
+                    <select
+                      value={customerGroup}
+                      onChange={(e) => setCustomerGroup(e.target.value)}
+                      className={INPUT_CLASS}
+                    >
+                      <option value="">Select group</option>
+                      {CUSTOMER_GROUPS.map((group) => (
+                        <option key={group} value={group}>
+                          {group}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-slate-600">
+                      Discount (%)
+                    </label>
+                    <input
+                      type="number"
+                      value={discount}
+                      onChange={(e) => setDiscount(e.target.value)}
+                      placeholder="0"
+                      className={INPUT_CLASS}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-slate-600">
+                      Priority
+                    </label>
+                    <input
+                      type="number"
+                      value={priority}
+                      onChange={(e) => setPriority(e.target.value)}
+                      placeholder="1"
+                      className={INPUT_CLASS}
+                    />
+                  </div>
+                </>
+              )}
+
+              {selectedType === "promotion" && (
+                <>
+                  <div className="space-y-1.5 col-span-2">
+                    <label className="text-xs font-medium text-slate-600">
+                      Promotion Name
+                    </label>
+                    <input
+                      type="text"
+                      value={promotionName}
+                      onChange={(e) => setPromotionName(e.target.value)}
+                      placeholder="e.g. Summer Sale"
+                      className={INPUT_CLASS}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-slate-600">
+                      Start Date
+                    </label>
+                    <input
+                      type="date"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      className={INPUT_CLASS}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-slate-600">
+                      End Date
+                    </label>
+                    <input
+                      type="date"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      className={INPUT_CLASS}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-slate-600">
+                      Discount (%)
+                    </label>
+                    <input
+                      type="number"
+                      value={discount}
+                      onChange={(e) => setDiscount(e.target.value)}
+                      placeholder="0"
+                      className={INPUT_CLASS}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-slate-600">
+                      Priority
+                    </label>
+                    <input
+                      type="number"
+                      value={priority}
+                      onChange={(e) => setPriority(e.target.value)}
+                      placeholder="1"
+                      className={INPUT_CLASS}
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+
+            <DialogFooter>
+              <Button variant="outline" onClick={handleCloseModal}>
+                Cancel
+              </Button>
+              <Button
+                onClick={handleAddRule}
+                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white"
+              >
+                Add Rule
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { FileText, Upload, X } from "lucide-react";
-import type { StepProps } from "../CreateItemWizard";
+import type { ItemGroupStepProps } from "../CreateItemGroupWizard";
 
 const INPUT_CLASS =
   "w-full h-10 px-3 rounded-lg border border-slate-200 bg-slate-50 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition-colors";
@@ -13,7 +13,10 @@ const CATEGORY_OPTIONS = [
   "Sports & Outdoors",
 ];
 
-export default function BasicInfoStep({ formData, setFormData }: StepProps) {
+export default function BasicInfoStep({
+  formData,
+  setFormData,
+}: ItemGroupStepProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageDrop = (e: React.DragEvent) => {
@@ -48,7 +51,7 @@ export default function BasicInfoStep({ formData, setFormData }: StepProps) {
             Basic Information
           </h2>
           <p className="text-sm text-slate-500">
-            Enter the core details of your product.
+            Enter the core details of your item group.
           </p>
         </div>
       </div>
@@ -66,7 +69,7 @@ export default function BasicInfoStep({ formData, setFormData }: StepProps) {
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, sku: e.target.value }))
             }
-            placeholder="e.g. SKU-001"
+            placeholder="e.g. GRP-001"
             className={INPUT_CLASS}
           />
         </div>
@@ -93,7 +96,7 @@ export default function BasicInfoStep({ formData, setFormData }: StepProps) {
         {/* Product Name */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-slate-700">
-            Product Name <span className="text-red-500">*</span>
+            Group Name <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -101,7 +104,7 @@ export default function BasicInfoStep({ formData, setFormData }: StepProps) {
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, name: e.target.value }))
             }
-            placeholder="Enter product name"
+            placeholder="Enter group name"
             className={INPUT_CLASS}
           />
         </div>
@@ -142,7 +145,7 @@ export default function BasicInfoStep({ formData, setFormData }: StepProps) {
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, description: e.target.value }))
             }
-            placeholder="Describe the product..."
+            placeholder="Describe the item group..."
             rows={4}
             className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-slate-50 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition-colors resize-none"
           />

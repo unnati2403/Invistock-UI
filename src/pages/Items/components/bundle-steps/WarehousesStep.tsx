@@ -8,7 +8,7 @@ import {
 import warehouseService, {
   type Warehouse,
 } from "@/services/warehouse.service";
-import type { StepProps } from "../CreateItemWizard";
+import type { BundleStepProps } from "../CreateBundleWizard";
 
 function CountryCheckbox({
   checked,
@@ -38,7 +38,13 @@ function CountryCheckbox({
   );
 }
 
-export default function WarehousesStep({ formData, setFormData }: StepProps) {
+export default function WarehousesStep({
+  formData,
+  setFormData,
+}: BundleStepProps) {
+  void formData;
+  void setFormData;
+
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -134,7 +140,7 @@ export default function WarehousesStep({ formData, setFormData }: StepProps) {
         <div>
           <h2 className="text-lg font-semibold text-slate-800">Warehouses</h2>
           <p className="text-sm text-slate-500">
-            Select the warehouses where this item will be stocked.
+            Select the warehouses where this bundle will be stocked.
           </p>
         </div>
       </div>
